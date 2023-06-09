@@ -1,5 +1,5 @@
 {
-	"name": "the-a",
+	"name": "@aapelix/the-a",
 	"description": "Use cmd commands faster than your mom!",
 	"version": "0.0.2",
 	"license": "UNLICENSED",
@@ -14,7 +14,9 @@
 	},
 	"keywords": [
 		"the-a",
-		"aapelix"
+		"aapelix",
+		"@aapelix",
+		"@aapelix/the-a"
 	],
 	"files": [
 		"index.js",
@@ -30,11 +32,14 @@
 		"cli-handle-unhandled": "^1.1.1",
 		"cli-meow-help": "^3.1.0",
 		"cli-welcome": "^2.2.2",
-		"inquirer": "^8.2.5",
+		"enquirer": "^2.3.6",
 		"meow": "^9.0.0",
 		"nanospinner": "^1.1.0"
 	},
 	"devDependencies": {
 		"prettier": "^2.8.8"
+	},
+	"publishConfig": {
+		"access": "public"
 	}
 }

@@ -27,8 +27,10 @@ const flags = {
 };
 
 const commands = {
-	help: { desc: `Print help info` },
-	commit: { desc: `Commit files to GitHub easier than ever!` }
+	help: { desc: `Print help info [ help ]` },
+	commit: { desc: `Commit files to GitHub [ commit, c ]` },
+	ginit: { desc: `Setup for uploading to GitHub [ ginit, gi ]` },
+	firebase: { desc: `Build with NPM and deploy your project to firebase [ firebase, fb ]` }
 };
 
 const helpText = meowHelp({
