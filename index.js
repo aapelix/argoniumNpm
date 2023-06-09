@@ -16,10 +16,14 @@ const alert = require('cli-alerts');
 const { exec } = require("child_process");
 
 const { createSpinner } = require("nanospinner");
+const { inquirer } = require('inquirer');
+
 
 const input = cli.input;
 const flags = cli.flags;
 const { clear, debug } = flags;
+
+let remoteUrl;
 
 function delay(time) {
   return new Promise(resolve => setTimeout(resolve, time));
@@ -49,6 +53,17 @@ function delay(time) {
 
 	if(input.includes(`ginit`) || input.includes(`gi`)) {
 
+		runCommand("git init")
+		await delay(500)
+
+		runCommand('git commit -m "First commit using A"');
+		await delay(500)
+
+		await askInit();
+		runCommand("git remote add origin" + remoteUrl);
+
+		await delay(500)
+		runCommand("git push");
 	}
 })();
 
@@ -64,5 +79,17 @@ function runCommand(command) {
     	}
     
 	})
+}
 
+async function askInit() {
+	const answers = await inquirer.prompt({
+		name: "remote_url",
+		type: "input",
+		message: "URL for the remote repository",
+		default() {
+			return "https://github.com/example/example.git"
+		},
+	});
+
+	remoteUrl = answers.remote_url;
 }
