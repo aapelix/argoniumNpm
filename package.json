@@ -1,7 +1,7 @@
 {
 	"name": "the-a",
 	"description": "Use cmd commands faster than your mom!",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"license": "UNLICENSED",
 	"bin": {
 		"the-a": "index.js",
