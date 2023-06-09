@@ -32,14 +32,13 @@ function delay(time) {
 		const spinner = createSpinner("Committing...").start();
 
 		runCommand("git add .");
-		
+		delay(1000)
 		runCommand("git commit");
+		delay(1000)
+		runCommand("git push -u origin master");
 
 		spinner.success({text: 
-		`Succesfully committed to GitHub!
-		If any errors occurred, they are listed below
-
-		`});
+		"Succesfully committed to GitHub!\n If any errors occurred, they are listed below"});
 	}
 })();
 
