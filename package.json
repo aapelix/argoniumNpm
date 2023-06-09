@@ -1,7 +1,7 @@
 {
 	"name": "aztix",
 	"description": "Use cmd commands faster than your mom!",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"license": "UNLICENSED",
 	"bin": {
 		"the-a": "index.js",
