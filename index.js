@@ -35,7 +35,7 @@ function delay(time) {
 		delay(1000)
 		runCommand("git commit");
 		delay(1000)
-		runCommand("git push -u origin master");
+		runCommand("git push");
 
 		spinner.success({text: 
 		"Succesfully committed to GitHub!\n If any errors occurred, they are listed below"});
