@@ -31,7 +31,7 @@ function delay(time) {
 	if(input.includes(`commit`) || input.includes(`c`)){
 		const spinner = createSpinner("Committing...").start();
 
-		runCommand("git add");
+		runCommand("git add .");
 		
 		runCommand("git commit");
 
