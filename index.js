@@ -19,6 +19,10 @@ const input = cli.input;
 const flags = cli.flags;
 const { clear, debug } = flags;
 
+function delay(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
+
 (async () => {
 	init({ clear });
 	input.includes(`help`) && cli.showHelp(0);
@@ -27,11 +31,15 @@ const { clear, debug } = flags;
 	if(input.includes(`commit`) || input.includes(`c`)){
 		const spinner = createSpinner("Committing...").start();
 
-		await runCommand("git add .");
+		runCommand("git add");
+		
+		runCommand("git commit");
 
-		await runCommand("git commit");
+		spinner.success({text: 
+		`Succesfully committed to GitHub!
+		If any errors occurred, they are listed below
 
-		spinner.success({text: "Succesfully committed to GitHub!"});
+		`});
 	}
 })();
 
