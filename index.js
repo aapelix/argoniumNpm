@@ -32,9 +32,11 @@ function delay(time) {
 		const spinner = createSpinner("Committing...").start();
 
 		runCommand("git add .");
-		delay(1000)
-		runCommand("git commit -m 'Committed using A'");
-		delay(1000)
+		await delay(1000)
+		runCommand('git commit -m "Committed using A"');
+		await delay(1000)
+		runCommand("git pull");
+		await delay(1000)
 		runCommand("git push");
 
 		spinner.success({text: 
