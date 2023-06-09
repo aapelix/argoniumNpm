@@ -33,7 +33,7 @@ function delay(time) {
 
 		runCommand("git add .");
 		delay(1000)
-		runCommand("git commit");
+		runCommand("git commit -m 'Committed using A'");
 		delay(1000)
 		runCommand("git push");
 
