@@ -1,5 +1,5 @@
 {
-	"name": "@aapelix/the-a",
+	"name": "aztix",
 	"description": "Use cmd commands faster than your mom!",
 	"version": "0.0.2",
 	"license": "UNLICENSED",
@@ -13,10 +13,10 @@
 		"url": "https://www.aapelix.dev/"
 	},
 	"keywords": [
-		"the-a",
+		"cli",
 		"aapelix",
 		"@aapelix",
-		"@aapelix/the-a"
+		"aztix"
 	],
 	"files": [
 		"index.js",
