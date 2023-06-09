@@ -11,6 +11,8 @@ const init = require('./utils/init');
 const cli = require('./utils/cli');
 const log = require('./utils/log');
 
+const alert = require('cli-alerts');
+
 const { exec } = require("child_process");
 
 const { createSpinner } = require("nanospinner");
@@ -39,8 +41,14 @@ function delay(time) {
 		await delay(1000)
 		runCommand("git push");
 
+		alert({type: `success`, msg: ``}),
+
 		spinner.success({text: 
-		"Succesfully committed to GitHub!\n If any errors occurred, they are listed below"});
+		"Succesfully committed to GitHub!\n If any errors occurred, they are listed below\n"});
+	}
+
+	if(input.includes(`ginit`) || input.includes(`gi`)) {
+
 	}
 })();
 
