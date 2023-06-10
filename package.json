@@ -1,10 +1,10 @@
 {
-	"name": "aztix",
+	"name": "argonium",
 	"description": "Use cmd commands faster than your mom!",
 	"version": "0.0.3",
 	"license": "UNLICENSED",
 	"bin": {
-		"the-a": "index.js",
+		"argonium": "index.js",
 		"a": "index.js"
 	},
 	"author": {
@@ -16,7 +16,9 @@
 		"cli",
 		"aapelix",
 		"@aapelix",
-		"aztix"
+		"argonium",
+		"argo",
+		"ar"
 	],
 	"files": [
 		"index.js",

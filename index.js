@@ -35,23 +35,32 @@ function delay(time) {
 	debug && log(flags);
 
 	if(input.includes(`commit`) || input.includes(`c`)){
-		const spinner = createSpinner("Committing...").start();
+		const spinner = createSpinner("Adding files...").start();
 
-		runCommand("git add .");
-		await delay(1000)
-		runCommand('git commit -m "Committed using A"');
-		await delay(1000)
-		runCommand("git pull");
-		await delay(1000)
-		runCommand("git push");
+		await runCommand("git add .");
+		
+		spinner.update({
+			text: "Committing...",
+		})
 
-		alert({type: `success`, msg: ``});
+		await runCommand('git commit -m "Committed using A"');
+		
+		await runCommand("git pull");
+		
+		spinner.update({
+			text: "Deploying...",
+		})
 
-		spinner.success({text: 
-		"Succesfully committed to GitHub!\n If any errors occurred, they are listed below\n"});
+		await runCommand("git push");
+
+		spinner.success({text: "Succesfully committed to GitHub!"});
+
+		alert({type: `info`, msg: ``})
 	}
 
 	if(input.includes(`ginit`) || input.includes(`gi`)) {
+
+		const spinner = createSpinner("Initializing...").start();
 
 		async function askInit() {
 			const answers = await prompt({
@@ -66,45 +75,56 @@ function delay(time) {
 			remoteUrl = answers.remote_url;
 		}
 
-		runCommand('echo "# testing" >> README.md')
-		await delay(500);
+		await runCommand('echo "# testing" >> README.md')
 		
-		runCommand("git init")
-		await delay(2000)
-		runCommand("git add README.md")
-		await delay(500);
-		runCommand('git commit -m "First commit using A"');
-		await delay(500);
+		
+		await runCommand("git init")
 
-		runCommand("git branch -M main")
+		await runCommand("git add README.md")
+
+		spinner.update({
+			text: "Committing...",
+		})
+		
+		await runCommand('git commit -m "First commit using A"');
+		
+		await runCommand("git branch -M main")
 
 		await askInit();
-		runCommand("git remote add origin " + remoteUrl);
-		await delay(500)
-		runCommand("git push -u origin main");
+		await runCommand("git remote add origin " + remoteUrl);
+		
+		spinner.update({
+			text: "Deploying...",
+		})
 
-		alert({type: `success`, msg: `Your repository is now ready!`});
+		await runCommand("git push -u origin main");
+
+		alert({type: `success`, msg: ``});
+
+		spinner.success({text: "Your repository is now ready!"});
 	}
 
 	if (input.includes(`firebase`) || input.includes(`fb`)) {
-		async function build() {
-			runCommand("npm run build");
-		}
 
-		async function deploy() {
-			runCommand("firebase deploy");
-		}
+		const spinner = createSpinner("Building...").start();
 
-		await build();
-		await deploy();
+		await runCommand("npm run build");
 
-		alert({type: `success`, msg: `Build and deployed to firebase!`});
+		spinner.update({
+			text: "Deploying...",
+		})
+
+		await runCommand("firebase deploy");
+
+		alert({type: `success`, msg: ``});
+
+		spinner.success({text: "Build and deployed to firebase!"})
 	}
 
 })();
 
 
-function runCommand(command) {
+async function runCommand(command) {
 	exec(command, (error, stdout, stderr) => {
 		if (error) {
 			console.log(`Error exexcuting command: ${error.message}`);
