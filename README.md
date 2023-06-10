@@ -16,7 +16,7 @@ npm i argonium -g
 npm i argonium
 ```
 
-# To get started, run this command to get list of all the commands:
+## To get started, run this command to get list of all the commands:
 
 ```bash
 a help
