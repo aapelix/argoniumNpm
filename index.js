@@ -17,7 +17,8 @@ const { exec } = require("child_process");
 
 const { createSpinner } = require("nanospinner");
 
-const { prompt } = require('enquirer');
+const { prompt, Select } = require('enquirer');
+const chalk = require('chalk');
 
 const input = cli.input;
 const flags = cli.flags;
@@ -25,14 +26,10 @@ const { clear, debug } = flags;
 
 let remoteUrl;
 
-function delay(time) {
-  return new Promise(resolve => setTimeout(resolve, time));
-}
-
 function updateSpinner(spinner) {
 	spinner.update({
-		frames: ['.', 'o', '0', '@', '*'],
-		interval: 100,
+		frames: [chalk.black("■■■■■■"), chalk.black("■■■■■■"), chalk.blue('■') + chalk.black('■■■■■'), chalk.blue("■■") + chalk.black("■■■■"), chalk.blue("■■■") + chalk.black("■■■"), chalk.blue("■■■■") + chalk.black("■■"), chalk.blue("■■■■■") + chalk.black("■"), chalk.blue("■■■■■■"), chalk.blue("■■■■■■"), chalk.black("■") + chalk.blue("■■■■■"), chalk.black("■■") + chalk.blue("■■■■"), chalk.black("■■■") + chalk.blue("■■■"), chalk.black("■■■■") + chalk.blue("■■"), chalk.black("■■■■■") + chalk.blue("■")],
+		interval: 150,
 	})
 }
 
@@ -83,9 +80,10 @@ function updateSpinner(spinner) {
 					return "https://github.com/example/example.git"
 				},
 			});
-	
-			remoteUrl = answers.remote_url;
 		}
+
+		remoteUrl = answers.remote_url;
+		
 
 		await runCommand('echo "# testing" >> README.md')
 		
@@ -134,6 +132,78 @@ function updateSpinner(spinner) {
 		spinner.success({text: "Build and deployed to firebase!"})
 	}
 
+	if (input.includes(`create`)) {
+		let name;
+
+		const prompt = new Select({
+  			name: 'framework_name',
+  			message: 'What you want to create?',
+  			choices: ['React', "Vite", 'Vue', 'Svelte', 'Astro', 'Angular', "Next.js", "Spring"]
+		});
+		
+		await prompt.run()
+		  .then(answer => name = answer)
+		  .catch(console.error);
+
+
+
+		if (name == "React") {
+
+			let reactName;
+
+			const reactPrompt = await prompt({
+				name: "react_name",
+				message: "Name of your new React project",
+				type: "input"
+			})
+
+			reactName = reactPrompt.react_name;
+
+			const spinner = createSpinner("Creating your project").start();
+			updateSpinner(spinner);
+
+			await runCommand("npx create-react-app" + reactName);
+
+			spinner.update({
+				text: "Cding to your new project",
+			});
+
+			await runCommand("cd" + reactName)
+
+			spinner.success({text: "Created your " + reactName + "project!"});
+
+			alert({type: `info`, msg: `To view your ` + reactName + `project run: ` + chalk.blue("npm start")})
+		}
+
+		if (name == "Vue") {
+			
+		}
+
+		if (name == "Svelte") {
+			
+		}
+
+		if (name == "Astro") {
+			
+		}
+
+		if (name == "Angular") {
+			
+		}
+
+		if (name == "Next.js") {
+			const prompt = new prompt({
+
+			})
+
+			runCommand("npx create-next-app")
+		}
+
+		if (name == "Spring") {
+			runCommand("https://google.com");
+		}
+	}
+		
 })();
 
 
