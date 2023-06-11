@@ -30,7 +30,8 @@ const commands = {
 	help: { desc: `Print help info [ help ]` },
 	commit: { desc: `Commit files to GitHub [ commit, c ]` },
 	ginit: { desc: `Setup for uploading to GitHub [ ginit, gi ]` },
-	firebase: { desc: `Build with NPM and deploy your project to firebase [ firebase, fb ]` }
+	firebase: { desc: `Build with NPM and deploy your project to firebase [ firebase, fb ]` },
+	create: { desc: `Create project [react, next.js etc.] easy [ create ]`}
 };
 
 const helpText = meowHelp({

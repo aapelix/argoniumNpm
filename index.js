@@ -51,7 +51,7 @@ function updateSpinner(spinner) {
 			text: "Committing...",
 		})
 
-		await runCommand('git commit -m "Committed using A"');
+		await runCommand('git commit -m "Committed using Argonium"');
 		
 		await runCommand("git pull");
 		
@@ -221,7 +221,7 @@ function updateSpinner(spinner) {
 		}
 
 		if (name == "Spring") {
-			runCommand("https://start.spring.com");
+			runCommand("https://start.spring.io");
 		}
 
 
