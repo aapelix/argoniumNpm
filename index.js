@@ -159,13 +159,13 @@ function updateSpinner(spinner) {
 
 			reactName = reactPrompt.react_name;
 
-			const spinner = createSpinner("Creating your project").start();
+			const spinner = createSpinner("Creating your project...").start();
 			updateSpinner(spinner);
 
 			await runCommand("npx create-react-app " + reactName);
 
 			spinner.update({
-				text: "Cding to your new project",
+				text: "Cding to your new project...",
 			});
 
 			await runCommand("cd" + reactName);
