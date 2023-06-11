@@ -29,13 +29,24 @@ function delay(time) {
   return new Promise(resolve => setTimeout(resolve, time));
 }
 
+function updateSpinner(spinner) {
+	spinner.update({
+		frames: ['.', 'o', '0', '@', '*'],
+		interval: 100,
+	})
+}
+
 (async () => {
 	init({ clear });
 	input.includes(`help`) && cli.showHelp(0);
 	debug && log(flags);
 
 	if(input.includes(`commit`) || input.includes(`c`)){
+
 		const spinner = createSpinner("Adding files...").start();
+
+		updateSpinner(spinner);
+		
 
 		await runCommand("git add .");
 		
@@ -61,6 +72,7 @@ function delay(time) {
 	if(input.includes(`ginit`) || input.includes(`gi`)) {
 
 		const spinner = createSpinner("Initializing...").start();
+		updateSpinner(spinner);
 
 		async function askInit() {
 			const answers = await prompt({
@@ -107,6 +119,7 @@ function delay(time) {
 	if (input.includes(`firebase`) || input.includes(`fb`)) {
 
 		const spinner = createSpinner("Building...").start();
+		updateSpinner(spinner);
 
 		await runCommand("npm run build");
 
