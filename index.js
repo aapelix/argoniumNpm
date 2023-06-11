@@ -72,7 +72,7 @@ function updateSpinner(spinner) {
 		updateSpinner(spinner);
 
 		async function askInit() {
-			const answers = await prompt({
+			const answers = new prompt({
 				name: "remote_url",
 				type: "input",
 				message: "URL for the remote repository",
@@ -138,7 +138,7 @@ function updateSpinner(spinner) {
 		const prompt = new Select({
   			name: 'framework_name',
   			message: 'What you want to create?',
-  			choices: ['React', "Vite", 'Vue', 'Svelte', 'Astro', 'Angular', "Next.js", "Spring"]
+  			choices: ['React', "Vite", 'Vue', 'Svelte', 'Astro', "Next.js", "Spring"]
 		});
 		
 		await prompt.run()
@@ -151,7 +151,7 @@ function updateSpinner(spinner) {
 
 			let reactName;
 
-			const reactPrompt = await prompt({
+			const reactPrompt = new prompt({
 				name: "react_name",
 				message: "Name of your new React project",
 				type: "input"
@@ -162,52 +162,75 @@ function updateSpinner(spinner) {
 			const spinner = createSpinner("Creating your project").start();
 			updateSpinner(spinner);
 
-			await runCommand("npx create-react-app" + reactName);
+			await runCommand("npx create-react-app " + reactName);
 
 			spinner.update({
 				text: "Cding to your new project",
 			});
 
-			await runCommand("cd" + reactName)
+			await runCommand("cd" + reactName);
 
 			spinner.success({text: "Created your " + reactName + "project!"});
 
-			alert({type: `info`, msg: `To view your ` + reactName + `project run: ` + chalk.blue("npm start")})
+			alert({type: `info`, msg: `To view your ` + reactName + `project run: ` + chalk.blue("npm run dev")})
 		}
 
 		if (name == "Vue") {
-			
+			runCommand("npm init vue@latest", true)
 		}
 
 		if (name == "Svelte") {
-			
+			let svelteName;
+
+			const sveltePrompt = new prompt({
+				name: "svelte_name",
+				message: "Name of your new svelte project",
+				type: "input"
+			})
+
+			svelteName = sveltePrompt.svelte_name;
+
+			const spinner = createSpinner("Creating your project").start();
+			updateSpinner(spinner);
+
+			await runCommand("npm create svelte@latest " + svelteName, true);
+
+			spinner.update({
+				text: "Cding to your new project",
+			});
+
+			await runCommand("cd" + svelteName);
+
+			spinner.update({
+				text: "Initializing...",
+			});
+
+			spinner.success({text: "Created your " + svelteName + "project!"});
+
+			alert({type: `info`, msg: `To view your ` + svelteName + `project run: ` + chalk.blue("npm run dev")})
 		}
 
 		if (name == "Astro") {
-			
+			runCommand("npm create astro@latest", true);
 		}
 
-		if (name == "Angular") {
-			
-		}
 
 		if (name == "Next.js") {
-			const prompt = new prompt({
 
-			})
-
-			runCommand("npx create-next-app")
+			runCommand("npx create-next-app", true)
 		}
 
 		if (name == "Spring") {
-			runCommand("https://google.com");
+			runCommand("https://start.spring.com");
 		}
+
+
 	}
 		
 })();
 
 
-async function runCommand(command) {
+async function runCommand(command, print) {
 	exec(command, (error, stdout, stderr) => {
 		if (error) {
 			console.log(`Error exexcuting command: ${error.message}`);
@@ -216,7 +239,10 @@ async function runCommand(command) {
       		console.error(`Error output: ${stderr}`);
       		return;
     	}
-    
+		
+		if (print) {
+			console.log(stdout);
+		}
 	})
 }
 
