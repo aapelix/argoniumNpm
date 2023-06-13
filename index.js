@@ -204,16 +204,16 @@ function updateSpinner(spinner) {
 		}
 
 		if (name == "Astro") {
-			runCommand("npm create astro@latest", true);
+			await runCommand("npm create astro@latest", true);
 		}
 
 
 		if (name == "Next.js") {
-			runCommand("npx create-next-app", true)
+			await runCommand("npx create-next-app", true)
 		}
 
 		if (name == "Spring") {
-			runCommand("explorer https://start.spring.io");
+			await runCommand("explorer https://start.spring.io");
 		}
 
 	}
