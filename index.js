@@ -66,10 +66,6 @@ function updateSpinner(spinner) {
 	}
 
 	if(input.includes(`ginit`) || input.includes(`gi`)) {
-
-		const spinner = createSpinner("Initializing...").start();
-		updateSpinner(spinner);
-
 		
 		const answers = await prompt({
 			name: "remote_url",
@@ -81,6 +77,9 @@ function updateSpinner(spinner) {
 		});
 
 		remoteUrl = answers.remote_url;
+		
+		const spinner = createSpinner("Initializing...").start();
+		updateSpinner(spinner);
 
 		await runCommand('echo "# testing" >> README.md')
 		
@@ -140,8 +139,6 @@ function updateSpinner(spinner) {
 		await prompt.run()
 		  .then(answer => name = answer)
 		  .catch(console.error);
-
-
 
 		if (name == "React") {
 
