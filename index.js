@@ -70,21 +70,17 @@ function updateSpinner(spinner) {
 		const spinner = createSpinner("Initializing...").start();
 		updateSpinner(spinner);
 
-		async function askInit() {
-			const answers = new prompt({
-				name: "remote_url",
-				type: "input",
-				message: "URL for the remote repository",
-				default() {
-					return "https://github.com/example/example.git"
-				},
-			});
-
-			remoteUrl = answers.remote_url;
-		}
-
 		
-		
+		const answers = await prompt({
+			name: "remote_url",
+			type: "input",
+			message: "URL for the remote repository",
+			default() {
+				return "https://github.com/example/example.git"
+			},
+		});
+
+		remoteUrl = answers.remote_url;
 
 		await runCommand('echo "# testing" >> README.md')
 		
@@ -101,7 +97,6 @@ function updateSpinner(spinner) {
 		
 		await runCommand("git branch -M main")
 
-		await askInit();
 		await runCommand("git remote add origin " + remoteUrl);
 		
 		spinner.update({
@@ -152,7 +147,7 @@ function updateSpinner(spinner) {
 
 			let reactName;
 
-			const reactPrompt = new prompt({
+			const reactPrompt = await prompt({
 				name: "react_name",
 				message: "Name of your new React project",
 				type: "input"
@@ -183,7 +178,7 @@ function updateSpinner(spinner) {
 		if (name == "Svelte") {
 			let svelteName;
 
-			const sveltePrompt = new prompt({
+			const sveltePrompt = await prompt({
 				name: "svelte_name",
 				message: "Name of your new svelte project",
 				type: "input"
