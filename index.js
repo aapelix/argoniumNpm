@@ -43,7 +43,6 @@ function updateSpinner(spinner) {
 		const spinner = createSpinner("Adding files...").start();
 
 		updateSpinner(spinner);
-		
 
 		await runCommand("git add .");
 		
@@ -80,9 +79,11 @@ function updateSpinner(spinner) {
 					return "https://github.com/example/example.git"
 				},
 			});
+
+			remoteUrl = answers.remote_url;
 		}
 
-		remoteUrl = answers.remote_url;
+		
 		
 
 		await runCommand('echo "# testing" >> README.md')
@@ -216,14 +217,12 @@ function updateSpinner(spinner) {
 
 
 		if (name == "Next.js") {
-
 			runCommand("npx create-next-app", true)
 		}
 
 		if (name == "Spring") {
-			runCommand("https://start.spring.io");
+			runCommand("explorer https://start.spring.io");
 		}
-
 
 	}
 		
