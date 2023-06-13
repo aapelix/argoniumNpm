@@ -235,7 +235,7 @@ async function runCommand(command, print) {
 			console.log(`Error exexcuting command: ${error.message}`);
 		}
 		if (stderr) {
-      		console.error(`Error output: ${stderr}`);
+      		console.error(stderr);
       		return;
     	}
 		
