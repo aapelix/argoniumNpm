@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * the-a
+ * argonium
  * Helps you and your mom to use cli commands
  *
  * @author aapelix <https://www.aapelix.dev/>
@@ -25,6 +25,7 @@ const flags = cli.flags;
 const { clear, debug } = flags;
 
 let remoteUrl;
+let defaultMsg = "Committed using Argonium";
 
 function updateSpinner(spinner) {
 	spinner.update({
@@ -50,7 +51,7 @@ function updateSpinner(spinner) {
 			text: "Committing...",
 		})
 
-		await runCommand('git commit -m "Committed using Argonium"');
+		await runCommand('git commit -m "' + defaultMsg + '"');
 		
 		await runCommand("git pull");
 		
@@ -63,6 +64,17 @@ function updateSpinner(spinner) {
 		spinner.success({text: "Succesfully committed to GitHub!"});
 
 		alert({type: `info`, msg: ``})
+	}
+
+	if (input.includes(`commitmsg`) || input.includes(`cm`)) {
+		const answers = await prompt({
+			name: "commit_msg",
+			type: "input",
+			message: "Commit message",
+		});
+
+		defaultMsg = answers.commit_msg;
+		alert({type: `success`, msg: `Successfully changed commit message to ` + defaultMsg})
 	}
 
 	if(input.includes(`ginit`) || input.includes(`gi`)) {
@@ -92,7 +104,7 @@ function updateSpinner(spinner) {
 			text: "Committing...",
 		})
 		
-		await runCommand('git commit -m "First commit using A"');
+		await runCommand('git commit -m "First commit using Argonium"');
 		
 		await runCommand("git branch -M main")
 
@@ -110,21 +122,27 @@ function updateSpinner(spinner) {
 	}
 
 	if (input.includes(`firebase`) || input.includes(`fb`)) {
+		if (input.includes(`init`)) {
+			console.log("Soon... https://argonium.net/blog");
+		}
 
-		const spinner = createSpinner("Building...").start();
-		updateSpinner(spinner);
+		if (input.includes(`deploy`)) {
 
-		await runCommand("npm run build");
+			const spinner = createSpinner("Building...").start();
+			updateSpinner(spinner);
 
-		spinner.update({
-			text: "Deploying...",
-		})
+			await runCommand("npm run build");
 
-		await runCommand("firebase deploy");
+			spinner.update({
+				text: "Deploying...",
+			})
 
-		alert({type: `success`, msg: ``});
+			await runCommand("firebase deploy");
 
-		spinner.success({text: "Build and deployed to firebase!"})
+			alert({type: `success`, msg: ``});
+
+			spinner.success({text: "Build and deployed to firebase!"})
+		}
 	}
 
 	if (input.includes(`create`)) {
