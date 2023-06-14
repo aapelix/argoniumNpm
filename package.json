@@ -1,7 +1,7 @@
 {
 	"name": "argonium",
 	"description": "Use cmd commands faster than your mom!",
-	"version": "0.1.5",
+	"version": "1.0.0",
 	"license": "UNLICENSED",
 	"bin": {
 		"argonium": "index.js",
