@@ -26,6 +26,7 @@ const { clear, debug } = flags;
 
 let remoteUrl;
 let defaultMsg = "Committed using Argonium";
+let defaultBranch = "main";
 
 function updateSpinner(spinner) {
 	spinner.update({
@@ -39,94 +40,116 @@ function updateSpinner(spinner) {
 	input.includes(`help`) && cli.showHelp(0);
 	debug && log(flags);
 
-	if(input.includes(`commit`) || input.includes(`c`)){
+	if (input.includes(`git`) || input.includes(`g`)) {
 
-		const spinner = createSpinner("Adding files...").start();
+		if(input.includes(`commit`) || input.includes(`c`)){
 
-		updateSpinner(spinner);
+			const spinner = createSpinner("Adding files...").start();
 
-		await runCommand("git add .");
+			updateSpinner(spinner);
+
+			await runCommand("git add .");
+			
+			spinner.update({
+				text: "Committing...",
+			})
+
+			await runCommand('git commit -m "' + defaultMsg + '"');
+
+			await runCommand("git pull");
+
+			spinner.update({
+				text: "Deploying...",
+			})
+
+			await runCommand("git push origin " + defaultBranch);
+
+			spinner.success({text: "Succesfully committed to GitHub!"});
+
+			alert({type: `info`, msg: ``})
+		}
+
+		else if (input.includes(`commitmsg`) || input.includes(`cm`)) {
+			const answers = await prompt({
+				name: "commit_msg",
+				type: "input",
+				message: "Commit message",
+			});
+
+			defaultMsg = answers.commit_msg;
+			alert({type: `success`, msg: `Successfully changed commit message to ` + defaultMsg})
+		}
+
+		else if(input.includes(`ginit`) || input.includes(`gi`)) {
 		
-		spinner.update({
-			text: "Committing...",
-		})
+			const answers = await prompt({
+				name: "remote_url",
+				type: "input",
+				message: "URL for the remote repository",
+				default() {
+					return "https://github.com/example/example.git"
+				},
+			});
 
-		await runCommand('git commit -m "' + defaultMsg + '"');
-		
-		await runCommand("git pull");
-		
-		spinner.update({
-			text: "Deploying...",
-		})
+			remoteUrl = answers.remote_url;
 
-		await runCommand("git push");
+			const spinner = createSpinner("Initializing...").start();
+			updateSpinner(spinner);
 
-		spinner.success({text: "Succesfully committed to GitHub!"});
+			await runCommand('echo "# testing" >> README.md')
 
-		alert({type: `info`, msg: ``})
+
+			await runCommand("git init")
+
+			await runCommand("git add README.md")
+
+			spinner.update({
+				text: "Committing...",
+			})
+
+			await runCommand('git commit -m "First commit using Argonium"');
+
+			await runCommand("git branch -M main")
+
+			await runCommand("git remote add origin " + remoteUrl);
+
+			spinner.update({
+				text: "Deploying...",
+			})
+
+			await runCommand("git push -u origin main");
+
+			alert({type: `success`, msg: ``});
+
+			spinner.success({text: "Your repository is now ready!"});
+		}
+
+		else if (input.includes(`branch`) || input.includes(`b`)) {
+			const answers = await prompt({
+				name: "branch_name",
+				type: "input",
+				message: "URL for the remote repository",
+				default() {
+					return "https://github.com/example/example.git"
+				},
+			});
+
+			defaultBranch = answers.branch_name;
+
+			await runCommand("git branch -M " + defaultBranch);
+
+			alert({type: `success`, msg: `Successfully changed branch to ` + defaultBranch})
+		}
 	}
 
-	if (input.includes(`commitmsg`) || input.includes(`cm`)) {
-		const answers = await prompt({
-			name: "commit_msg",
-			type: "input",
-			message: "Commit message",
-		});
-
-		defaultMsg = answers.commit_msg;
-		alert({type: `success`, msg: `Successfully changed commit message to ` + defaultMsg})
-	}
-
-	if(input.includes(`ginit`) || input.includes(`gi`)) {
-		
-		const answers = await prompt({
-			name: "remote_url",
-			type: "input",
-			message: "URL for the remote repository",
-			default() {
-				return "https://github.com/example/example.git"
-			},
-		});
-
-		remoteUrl = answers.remote_url;
-		
-		const spinner = createSpinner("Initializing...").start();
-		updateSpinner(spinner);
-
-		await runCommand('echo "# testing" >> README.md')
-		
-		
-		await runCommand("git init")
-
-		await runCommand("git add README.md")
-
-		spinner.update({
-			text: "Committing...",
-		})
-		
-		await runCommand('git commit -m "First commit using Argonium"');
-		
-		await runCommand("git branch -M main")
-
-		await runCommand("git remote add origin " + remoteUrl);
-		
-		spinner.update({
-			text: "Deploying...",
-		})
-
-		await runCommand("git push -u origin main");
-
-		alert({type: `success`, msg: ``});
-
-		spinner.success({text: "Your repository is now ready!"});
-	}
+	
 
 	if (input.includes(`firebase`) || input.includes(`fb`)) {
 		if (input.includes(`init`)) {
 			console.log("Soon... https://argonium.net/blog");
 		}
 
-		if (input.includes(`deploy`)) {
+		else if (input.includes(`deploy`)) {
 
 			const spinner = createSpinner("Building...").start();
 			updateSpinner(spinner);
