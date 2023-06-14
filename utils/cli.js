@@ -28,8 +28,7 @@ const flags = {
 
 const commands = {
 	help: { desc: `Print help info` },
-	commit: { desc: `Commit files to GitHub` },
-	ginit: { desc: `Setup for uploading to GitHub` },
+	git: { desc: `Options: Commit [ commit, c ], Commit message [ msg, m ], Branch [ branch, b ], Init [ init, i ]` },
 	firebase: { desc: `Options: Deploy [ deploy ], Init [ init ]` },
 	create: { desc: `Create project [react, next.js etc.] easy.`}
 };

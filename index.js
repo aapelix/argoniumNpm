@@ -7,6 +7,9 @@
  * @author aapelix <https://www.aapelix.dev/>
  */
 
+
+/* Cli Stuff */
+
 const init = require('./utils/init');
 const cli = require('./utils/cli');
 const log = require('./utils/log');
@@ -48,28 +51,28 @@ function updateSpinner(spinner) {
 
 			updateSpinner(spinner);
 
-			await runCommand("git add .");
+			await runCmd("git add .");
 			
 			spinner.update({
 				text: "Committing...",
 			})
 
-			await runCommand('git commit -m "' + defaultMsg + '"');
+			await runCmd('git commit -m "' + defaultMsg + '"');
 
-			await runCommand("git pull");
+			await runCmd("git pull");
 
 			spinner.update({
 				text: "Deploying...",
 			})
 
-			await runCommand("git push origin " + defaultBranch);
+			await runCmd("git push origin " + defaultBranch);
 
 			spinner.success({text: "Succesfully committed to GitHub!"});
 
 			alert({type: `info`, msg: ``})
 		}
 
-		else if (input.includes(`commitmsg`) || input.includes(`cm`)) {
+		else if (input.includes(`msg`) || input.includes(`m`)) {
 			const answers = await prompt({
 				name: "commit_msg",
 				type: "input",
@@ -80,7 +83,7 @@ function updateSpinner(spinner) {
 			alert({type: `success`, msg: `Successfully changed commit message to ` + defaultMsg})
 		}
 
-		else if(input.includes(`ginit`) || input.includes(`gi`)) {
+		else if(input.includes(`init`) || input.includes(`i`)) {
 		
 			const answers = await prompt({
 				name: "remote_url",
@@ -96,28 +99,28 @@ function updateSpinner(spinner) {
 			const spinner = createSpinner("Initializing...").start();
 			updateSpinner(spinner);
 
-			await runCommand('echo "# testing" >> README.md')
+			await runCmd('echo "# testing" >> README.md')
 
 
-			await runCommand("git init")
+			await runCmd("git init")
 
-			await runCommand("git add README.md")
+			await runCmd("git add README.md")
 
 			spinner.update({
 				text: "Committing...",
 			})
 
-			await runCommand('git commit -m "First commit using Argonium"');
+			await runCmd('git commit -m "First commit using Argonium"');
 
-			await runCommand("git branch -M main")
+			await runCmd("git branch -M main")
 
-			await runCommand("git remote add origin " + remoteUrl);
+			await runCmd("git remote add origin " + remoteUrl);
 
 			spinner.update({
 				text: "Deploying...",
 			})
 
-			await runCommand("git push -u origin main");
+			await runCmd("git push -u origin main");
 
 			alert({type: `success`, msg: ``});
 
@@ -136,13 +139,11 @@ function updateSpinner(spinner) {
 
 			defaultBranch = answers.branch_name;
 
-			await runCommand("git branch -M " + defaultBranch);
+			await runCmd("git branch -M " + defaultBranch);
 
 			alert({type: `success`, msg: `Successfully changed branch to ` + defaultBranch})
 		}
 	}
-
-	
 
 	if (input.includes(`firebase`) || input.includes(`fb`)) {
 		if (input.includes(`init`)) {
@@ -154,13 +155,13 @@ function updateSpinner(spinner) {
 			const spinner = createSpinner("Building...").start();
 			updateSpinner(spinner);
 
-			await runCommand("npm run build");
+			await runCmd("npm run build");
 
 			spinner.update({
 				text: "Deploying...",
 			})
 
-			await runCommand("firebase deploy");
+			await runCmd("firebase deploy");
 
 			alert({type: `success`, msg: ``});
 
@@ -196,13 +197,13 @@ function updateSpinner(spinner) {
 			const spinner = createSpinner("Creating your project...").start();
 			updateSpinner(spinner);
 
-			await runCommand("npx create-react-app " + reactName);
+			await runCmd("npx create-react-app " + reactName);
 
 			spinner.update({
 				text: "Cding to your new project...",
 			});
 
-			await runCommand("cd" + reactName);
+			await runCmd("cd" + reactName);
 
 			spinner.success({text: "Created your " + reactName + "project!"});
 
@@ -210,7 +211,7 @@ function updateSpinner(spinner) {
 		}
 
 		if (name == "Vue") {
-			runCommand("npm init vue@latest", true)
+			runCmd("npm init vue@latest", true)
 		}
 
 		if (name == "Svelte") {
@@ -227,13 +228,13 @@ function updateSpinner(spinner) {
 			const spinner = createSpinner("Creating your project").start();
 			updateSpinner(spinner);
 
-			await runCommand("npm create svelte@latest " + svelteName, true);
+			await runCmd("npm create svelte@latest " + svelteName, true);
 
 			spinner.update({
 				text: "Cding to your new project",
 			});
 
-			await runCommand("cd" + svelteName);
+			await runCmd("cd" + svelteName);
 
 			spinner.update({
 				text: "Initializing...",
@@ -245,16 +246,16 @@ function updateSpinner(spinner) {
 		}
 
 		if (name == "Astro") {
-			await runCommand("npm create astro@latest", true);
+			await runCmd("npm create astro@latest", true);
 		}
 
 
 		if (name == "Next.js") {
-			await runCommand("npx create-next-app", true)
+			await runCmd("npx create-next-app", true)
 		}
 
 		if (name == "Spring") {
-			await runCommand("explorer https://start.spring.io");
+			await runCmd("explorer https://start.spring.io");
 		}
 
 	}
@@ -262,7 +263,7 @@ function updateSpinner(spinner) {
 })();
 
 
-async function runCommand(command, print) {
+async function runCmd(command, print) {
 	exec(command, (error, stdout, stderr) => {
 		if (error) {
 			console.log(`Error exexcuting command: ${error.message}`);
@@ -278,4 +279,20 @@ async function runCommand(command, print) {
 	})
 }
 
+/* Not Cli Stuff */
 
+function runCommand(command) {
+	exec(command, (error, stdout, stderr) => {
+		if (error) {
+			console.log(`Error exexcuting command: ${error.message}`);
+		}
+		if (stderr) {
+	  		console.error(stderr);
+	  		return;
+		}
+		
+		console.log(stdout);
+	})
+}
+
+module.exports.runCommand = runCommand;
